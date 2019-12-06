@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2013,2014. All Rights Reserved.
+// Copyright IBM Corp. 2013,2017. All Rights Reserved.
 // Node module: loopback-connector-postgresql
 // This file is licensed under the Artistic License 2.0.
 // License text available at https://opensource.org/licenses/Artistic-2.0
@@ -7,14 +7,14 @@
 process.env.NODE_ENV = 'test';
 require('should');
 
-var assert = require('assert');
-var _ = require('lodash');
+const assert = require('assert');
+const _ = require('lodash');
 
-var DataSource = require('loopback-datasource-juggler').DataSource;
-var db, City;
+const DataSource = require('loopback-datasource-juggler').DataSource;
+let db, City;
 
 before(function() {
-  var config = getDBConfig();
+  const config = global.getDBConfig();
   config.database = 'strongloop';
   db = new DataSource(require('../'), config);
 });
@@ -41,7 +41,7 @@ describe('discoverModels', function() {
           console.error(err);
           done(err);
         } else {
-          var views = false;
+          let views = false;
           models.forEach(function(m) {
             // console.dir(m);
             if (m.type === 'view') {
@@ -65,7 +65,7 @@ describe('discoverModels', function() {
           console.error(err);
           done(err);
         } else {
-          var views = false;
+          let views = false;
           models.forEach(function(m) {
             // console.dir(m);
             if (m.type === 'view') {
@@ -91,7 +91,7 @@ describe('Discover models including other users', function() {
         console.error(err);
         done(err);
       } else {
-        var others = false;
+        let others = false;
         models.forEach(function(m) {
           // console.dir(m);
           if (m.owner !== 'strongloop') {
@@ -131,7 +131,7 @@ describe('Discover model properties', function() {
     db.discoverModelProperties('city', function(err, properties) {
       assert(!err);
       assert(properties);
-      var dataTypes = _.map(properties, function(prop) {
+      const dataTypes = _.map(properties, function(prop) {
         return prop.dataType;
       });
       assert(dataTypes);
@@ -145,7 +145,7 @@ describe('Discover model properties', function() {
     db.discoverModelProperties('city', function(err, properties) {
       assert(!err);
       assert(properties);
-      var prop = _.find(properties, function(prop) {
+      const prop = _.find(properties, function(prop) {
         return prop.columnName === 'code';
       });
       assert(prop);
@@ -159,7 +159,7 @@ describe('Discover model properties', function() {
     db.discoverModelProperties('city', function(err, properties) {
       assert(!err);
       assert(properties);
-      var prop = _.find(properties, function(prop) {
+      const prop = _.find(properties, function(prop) {
         return prop.columnName === 'population';
       });
       assert(prop);
@@ -173,7 +173,7 @@ describe('Discover model properties', function() {
     db.discoverModelProperties('city', function(err, properties) {
       assert(!err);
       assert(properties);
-      var prop = _.find(properties, function(prop) {
+      const prop = _.find(properties, function(prop) {
         return prop.columnName === 'currency';
       });
       assert(prop);
@@ -194,11 +194,11 @@ describe('Discover model properties', function() {
       db.createModel(schema.name, schema.properties, schema.options);
       db.autoupdate(function(err) {
         assert(!err);
-        var sql = db.connector.buildQueryColumns('public', 'city');
+        const sql = db.connector.buildQueryColumns('public', 'city');
         db.connector.execute(sql, function(err, columns) {
           assert(!err);
           assert(columns);
-          var cols = _.filter(columns, function(col) {
+          const cols = _.filter(columns, function(col) {
             return col.dataType === 'real' ||
             col.dataType === 'double precision' || col.dataType === 'integer'
             || col.dataType === 'bigint' || col.dataType === 'smallint';
@@ -323,6 +323,30 @@ describe('Discover LDL schema from a table', function() {
       assert(schema.properties.total);
       assert(schema.properties.total.type === 'Number');
       done(null, schema);
+    });
+  });
+});
+
+describe('Discover and map correctly database types', function() {
+  it('should handle character varying, date, timestamp with time zone, timestamp without time zone', function(done) {
+    db.discoverSchema('customer', {owner: 'strongloop'}, function(err, schema) {
+      if (err) {
+        console.error(err);
+        done(err);
+      } else {
+        assert(schema.properties.username);
+        assert(schema.properties.username.type === 'String');
+        assert(schema.properties.dateofbirth);
+        assert(schema.properties.dateofbirth.type === 'Date');
+        assert(schema.properties.dateofbirth.postgresql.dataType === 'date');
+        assert(schema.properties.lastlogin);
+        assert(schema.properties.lastlogin.type === 'Date');
+        assert(schema.properties.lastlogin.postgresql.dataType === 'timestamp with time zone');
+        assert(schema.properties.created);
+        assert(schema.properties.created.type === 'Date');
+        assert(schema.properties.created.postgresql.dataType === 'timestamp without time zone');
+        done();
+      }
     });
   });
 });
