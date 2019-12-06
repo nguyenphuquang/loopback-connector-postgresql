@@ -1,14 +1,14 @@
-// Copyright IBM Corp. 2015. All Rights Reserved.
+// Copyright IBM Corp. 2015,2016. All Rights Reserved.
 // Node module: loopback-connector-postgresql
 // This file is licensed under the Artistic License 2.0.
 // License text available at https://opensource.org/licenses/Artistic-2.0
 
 'use strict';
-var should = require('./init.js');
-var assert = require('assert');
-var Schema = require('loopback-datasource-juggler').Schema;
+const should = require('./init.js');
+const assert = require('assert');
+const Schema = require('loopback-datasource-juggler').Schema;
 
-var db;
+let db;
 
 describe('migrations', function() {
   before(setup);
@@ -78,9 +78,9 @@ describe('migrations', function() {
 function setup(done) {
   require('./init.js');
 
-  db = getSchema();
+  db = global.getSchema();
 
-  var UserDataWithIndexes = db.define('UserDataWithIndexes', {
+  const UserDataWithIndexes = db.define('UserDataWithIndexes', {
     email: {type: String, null: false, index: true},
     name: String,
     bio: Schema.Text,
@@ -141,7 +141,7 @@ function getIndexes(model, cb) {
     't.relkind=\'r\' AND t.relname=\'' +
     table(model) + '\'',
     function(err, data) {
-      var indexes = {};
+      const indexes = {};
       if (!err) {
         // group data by index name
         data.forEach(function(index) {
@@ -150,7 +150,7 @@ function getIndexes(model, cb) {
         });
       }
       cb(err, indexes);
-    }
+    },
   );
 }
 

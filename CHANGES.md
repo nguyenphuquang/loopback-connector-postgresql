@@ -1,4 +1,86 @@
-2018-07-17, Version 3.4.0
+2019-09-19, Version 3.8.0
+=========================
+
+ * chore: set package-lock=false in .npmrc (Aidan Harbison)
+
+ * Extends test structure to cover fix (Viktor Shanin)
+
+ * Fix Index upgrade (Viktor Shanin)
+
+ * fix: jsdoc (#385) (Janny)
+
+ * Enable Travis CI integration (Miroslav Bajtoš)
+
+ * Manually fix remaining linting violations (Miroslav Bajtoš)
+
+ * Auto-fix linting violations (Miroslav Bajtoš)
+
+ * Update eslint to ^6.0.1 (Miroslav Bajtoš)
+
+ * Update dev-dependencies (Miroslav Bajtoš)
+
+
+2019-06-26, Version 3.7.0
+=========================
+
+ * chore: update dependencies (Diana Lau)
+
+ * Updated dependency module `debug` (noctifer)
+
+ * Drop support for Node.js 6 (Miroslav Bajtoš)
+
+ * chore: update copyrights years (Agnes Lin)
+
+ * Run shared tests from both v3 and v4 of juggler (Miroslav Bajtoš)
+
+ * Move mocha config to test/mocha.opts (Miroslav Bajtoš)
+
+ * Improve error messages in autoupdate test (Miroslav Bajtoš)
+
+ * chore: connector flag for no array type support (biniam)
+
+
+2019-04-05, Version 3.6.1
+=========================
+
+ * Fix cannot create foreignkey (#371) (Hung)
+
+ * Add regression test (jlawrencecfm)
+
+ * Use canonical index name when dropping (jlawrencecfm)
+
+ * add @elv1s as CODEOWNERS (Diana Lau)
+
+
+2019-02-08, Version 3.6.0
+=========================
+
+ * add code comment (elv1s)
+
+ * bug fix for multiple fk (elv1s)
+
+ * Fix timestamp precision force isActual to false (Rafael D. Fito)
+
+
+2019-01-25, Version 3.5.1
+=========================
+
+ * Update CODEOWNERS to reflect the current status (Diana Lau)
+
+ * add support for create and delete foreign key (elv1s)
+
+
+2018-11-09, Version 3.5.0
+=========================
+
+ * Fixed line length to pass lint (ataft)
+
+ * Fix hard-coded "pkName" column in queries (ataft)
+
+ * Modify type 'double precision' to map to float (ataft)
+
+
+2018-07-16, Version 3.4.0
 =========================
 
  * Drop Node 4 in CI (Diana Lau)
